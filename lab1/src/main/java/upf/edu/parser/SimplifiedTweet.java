@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class SimplifiedTweet {
 
-  private static ?? parser = new ????;
+  private static JsonParser parser = new JsonParser();
 
   private final long tweetId;			  // the id of the tweet ('id')
   private final String text;  		      // the content of the tweet ('text')
