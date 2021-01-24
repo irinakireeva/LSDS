@@ -22,6 +22,12 @@ public class SimplifiedTweet {
                          String language, long timestampMs) {
 
     // PLACE YOUR CODE HERE!
+    this.tweetId = tweetId;
+    this.text = text;
+    this.userId = userId;
+    this.userName = userName;
+    this.language = language;
+    this.timestampMs = timestampMs;
 
   }
 
