@@ -21,14 +21,13 @@ public class SimplifiedTweet {
   public SimplifiedTweet(long tweetId, String text, long userId, String userName,
                          String language, long timestampMs) {
 
-    // PLACE YOUR CODE HERE!
     this.tweetId = tweetId;
     this.text = text;
     this.userId = userId;
     this.userName = userName;
     this.language = language;
     this.timestampMs = timestampMs;
-
+    
   }
 
   /**
@@ -40,7 +39,64 @@ public class SimplifiedTweet {
    */
   public static Optional<SimplifiedTweet> fromJson(String jsonStr) {
 
-    // PLACE YOUR CODE HERE!
+    JsonElement je = parser.parse(jsonStr);
+    JsonObject jo  = je.getAsJsonObject();
+    long tweetId = null;
+    String text = null;
+    long userId = null;
+    String userName = null;
+    String language = null;
+    long timestampMs = null;
 
+
+    if (jo.hasKey("id")){
+      tweetId = jo.get("id")
+        .getAsLong();
+
+    } else {
+      return Optional.empty();
+    }
+
+    if (jo.hasKey("text")){
+      text = jo.get("text")
+        .getAsString();
+
+    } else {
+      return Optional.empty();
+    }
+
+    if (jo.hasKey("user")) {
+      JsonObject userObj = jo.get("user")
+        .getAsJsonObject();
+
+      if (userObj.hasKey("id")){
+        userId = userObj.get("id")
+          .getAsLong();
+      } 
+
+      if (userObj.hasKey("name")){
+        userName = userObj.get("name")
+          .getAsString();
+      }
+
+    } else {
+      return Optional.empty();
+    }
+
+    if (jo.hasKey("lang")){
+      language = jo.get("lang")
+        .getAsString();
+    } else {
+      return Optional.empty();
+    }
+
+    if (jo.hasKey("timestamp_ms")){
+      timestampMs = jo.get("timestamp_ms")
+        .getAsLong();
+    } else{
+      return Optional.empty();
+    }
+
+    return new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs);
   }
 }
