@@ -1,10 +1,9 @@
 package upf.edu.parser;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.Serializable;
 import java.util.Optional;
 
 public class SimplifiedTweet {
@@ -21,13 +20,14 @@ public class SimplifiedTweet {
   public SimplifiedTweet(long tweetId, String text, long userId, String userName,
                          String language, long timestampMs) {
 
+    // PLACE YOUR CODE HERE!
     this.tweetId = tweetId;
     this.text = text;
     this.userId = userId;
     this.userName = userName;
     this.language = language;
     this.timestampMs = timestampMs;
-    
+
   }
 
   /**
@@ -37,20 +37,14 @@ public class SimplifiedTweet {
    * @param jsonStr
    * @return an {@link Optional} of a {@link SimplifiedTweet}
    */
-  public static Optional<SimplifiedTweet> fromJson(String jsonStr) {
+  public static Object fromJson(String jsonStr) {
 
     // PLACE YOUR CODE HERE!
     JsonElement je = parser.parse(jsonStr);
     JsonObject jo  = je.getAsJsonObject();
-    long tweetId = Long.parseLong(null);
-    String text = null;
-    long userId = Long.parseLong(null);
-    String userName = null;
-    String language = null;
-    long timestampMs = Long.parseLong(null);
 
-
-    if (jo.hasKey("id")){
+    long tweetId;
+    if (jo.has("id")){
       tweetId = jo.get("id")
               .getAsLong();
 
@@ -58,7 +52,8 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    if (jo.hasKey("text")){
+    String text = null;
+    if (jo.has("text")){
       text = jo.get("text")
               .getAsString();
 
@@ -66,16 +61,18 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    if (jo.hasKey("user")) {
+    String userName = null;
+    long userId = Long.parseLong(null);
+    if (jo.has("user")) {
       JsonObject userObj = jo.get("user")
               .getAsJsonObject();
 
-      if (userObj.hasKey("id")){
+      if (userObj.has("id")){
         userId = userObj.get("id")
                 .getAsLong();
       }
 
-      if (userObj.hasKey("name")){
+      if (userObj.has("name")){
         userName = userObj.get("name")
                 .getAsString();
       }
@@ -84,14 +81,16 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    if (jo.hasKey("lang")){
+    String language;
+    if (jo.has("lang")){
       language = jo.get("lang")
               .getAsString();
     } else {
       return Optional.empty();
     }
 
-    if (jo.hasKey("timestamp_ms")){
+    long timestampMs;
+    if (jo.has("timestamp_ms")){
       timestampMs = jo.get("timestamp_ms")
               .getAsLong();
     } else{
@@ -100,5 +99,10 @@ public class SimplifiedTweet {
 
     return new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs);
 
+  }
+  @Override
+  public String toString() {
+    //Overriding the way how SimplifiedTweets are printed in console or the output file
+    new Gson().toJson(this);
   }
 }
