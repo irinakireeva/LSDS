@@ -38,7 +38,7 @@ public class SimplifiedTweet {
    * @param jsonStr
    * @return an {@link Optional} of a {@link SimplifiedTweet}
    */
-  public static Object fromJson(String jsonStr) {
+  public static Optional<SimplifiedTweet> fromJson(String jsonStr){
 
     // PLACE YOUR CODE HERE!
     JsonElement je = parser.parse(jsonStr);
@@ -98,7 +98,7 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    return new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs);
+    return Optional.of(new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs));
 
   }
   @Override
@@ -108,3 +108,4 @@ public class SimplifiedTweet {
     return null;
   }
 }
+
