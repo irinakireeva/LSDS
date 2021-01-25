@@ -105,5 +105,6 @@ public class SimplifiedTweet {
   public String toString() {
     //Overriding the way how SimplifiedTweets are printed in console or the output file
     new Gson().toJson(this);
+    return null;
   }
 }
