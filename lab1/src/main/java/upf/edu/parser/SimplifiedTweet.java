@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public class SimplifiedTweet {
 
-  private static ?? parser = new ????;
-
+  private static JsonParser parser = new JsonParser();
+  
   private final long tweetId;			  // the id of the tweet ('id')
   private final String text;  		      // the content of the tweet ('text')
   private final long userId;			  // the user id ('user->id')
@@ -41,6 +41,69 @@ public class SimplifiedTweet {
   public static Optional<SimplifiedTweet> fromJson(String jsonStr) {
 
     // PLACE YOUR CODE HERE!
+    JsonElement je = parser.parse(jsonStr);
+    JsonObject jo  = je.getAsJsonObject();
 
+    long tweetId;
+    if (jo.has("id")){
+      tweetId = jo.get("id")
+              .getAsLong();
+
+    } else {
+      return Optional.empty();
+    }
+
+    String text = null;
+    if (jo.has("text")){
+      text = jo.get("text")
+              .getAsString();
+
+    } else {
+      return Optional.empty();
+    }
+
+    String userName = null;
+    long userId = Long.parseLong(null);
+    if (jo.has("user")) {
+      JsonObject userObj = jo.get("user")
+              .getAsJsonObject();
+
+      if (userObj.has("id")){
+        userId = userObj.get("id")
+                .getAsLong();
+      }
+
+      if (userObj.has("name")){
+        userName = userObj.get("name")
+                .getAsString();
+      }
+
+    } else {
+      return Optional.empty();
+    }
+
+    String language;
+    if (jo.has("lang")){
+      language = jo.get("lang")
+              .getAsString();
+    } else {
+      return Optional.empty();
+    }
+
+    long timestampMs;
+    if (jo.has("timestamp_ms")){
+      timestampMs = jo.get("timestamp_ms")
+              .getAsLong();
+    } else{
+      return Optional.empty();
+    }
+    return Optional.of(new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs));
+
+  }
+  @Override
+  public String toString() {
+    //Overriding the way how SimplifiedTweets are printed in console or the output file
+    new Gson().toJson(this);
+    return null;
   }
 }
