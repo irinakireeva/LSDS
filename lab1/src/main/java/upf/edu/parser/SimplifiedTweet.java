@@ -103,9 +103,9 @@ public class SimplifiedTweet {
   }
   @Override
   public String toString() {
-    //Overriding the way how SimplifiedTweets are printed in console or the output file
-    new Gson().toJson(this);
-    return null;
+    // Overriding how SimplifiedTweets are printed in console or the output file
+    // The following line produces valid JSON as output
+    return new Gson().toJson(this);}
   }
 }
 
