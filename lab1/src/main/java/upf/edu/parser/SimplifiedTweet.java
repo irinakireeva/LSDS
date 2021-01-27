@@ -1,6 +1,7 @@
 package upf.edu.parser;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -9,7 +10,6 @@ import java.util.Optional;
 
 public class SimplifiedTweet {
 
-  private static JsonParser parser = new JsonParser();
 
   private final long tweetId;			  // the id of the tweet ('id')
   private final String text;  		      // the content of the tweet ('text')
@@ -27,7 +27,7 @@ public class SimplifiedTweet {
     this.userName = userName;
     this.language = language;
     this.timestampMs = timestampMs;
-    
+
   }
 
   /**
@@ -39,17 +39,17 @@ public class SimplifiedTweet {
    */
   public static Optional<SimplifiedTweet> fromJson(String jsonStr) {
 
-    JsonElement je = parser.parse(jsonStr);
+    JsonElement je = JsonParser.parseString(jsonStr);
     JsonObject jo  = je.getAsJsonObject();
-    long tweetId = null;
+    long tweetId = 0;
     String text = null;
-    long userId = null;
+    long userId = 0;
     String userName = null;
     String language = null;
-    long timestampMs = null;
+    long timestampMs = 0;
 
 
-    if (jo.hasKey("id")){
+    if (jo.has("id")){
       tweetId = jo.get("id")
         .getAsLong();
 
@@ -57,7 +57,7 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    if (jo.hasKey("text")){
+    if (jo.has("text")){
       text = jo.get("text")
         .getAsString();
 
@@ -65,16 +65,16 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    if (jo.hasKey("user")) {
+    if (jo.has("user")) {
       JsonObject userObj = jo.get("user")
         .getAsJsonObject();
 
-      if (userObj.hasKey("id")){
+      if (userObj.has("id")){
         userId = userObj.get("id")
           .getAsLong();
       } 
 
-      if (userObj.hasKey("name")){
+      if (userObj.has("name")){
         userName = userObj.get("name")
           .getAsString();
       }
@@ -83,20 +83,26 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    if (jo.hasKey("lang")){
+    if (jo.has("lang")){
       language = jo.get("lang")
         .getAsString();
     } else {
       return Optional.empty();
     }
 
-    if (jo.hasKey("timestamp_ms")){
+    if (jo.has("timestamp_ms")){
       timestampMs = jo.get("timestamp_ms")
         .getAsLong();
     } else{
       return Optional.empty();
     }
+    
+    SimplifiedTweet tweet = new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs);
+    return Optional.of(tweet);
+  }
 
-    return new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs);
+  @Override
+  public String toString() {
+    return new Gson().toJson(this);
   }
 }
