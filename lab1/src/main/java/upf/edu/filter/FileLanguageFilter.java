@@ -1,11 +1,23 @@
 package upf.edu.filter;
 
-public class FileLanguageFilter implements LanguageFilter {
-    public FileLanguageFilter(String inputFile, String outputFile) {
+import java.io.*;
 
+public class FileLanguageFilter implements LanguageFilter {
+    public FileLanguageFilter(String inputFile, String outputFile) throws IOException {
+        FileReader reader = new FileReader(inputFile);
+        BufferedReader bReader = new BufferedReader(reader);
+
+        String line = bReader.readLine();
+
+        FileWriter writer = new FileWriter(outputFile);
+        BufferedWriter bWriter = new BufferedWriter(writer);
+
+        bWriter.write(line);
+
+        bReader.close();
+        bWriter.close();
     }
 
-    @Override
     public void filterLanguage(String language) throws Exception {
 
     }
