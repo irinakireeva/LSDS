@@ -41,7 +41,7 @@ public class SimplifiedTweet {
   public static Optional<SimplifiedTweet> fromJson(String jsonStr){
 
     // PLACE YOUR CODE HERE!
-    JsonElement je = parser.parseString(jsonStr);
+    JsonElement je = JsonParser.parseString(jsonStr);
     JsonObject jo  = je.getAsJsonObject();
 
     long tweetId;
