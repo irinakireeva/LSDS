@@ -10,6 +10,7 @@ import java.util.List;
 
 public class TwitterFilter {
     public static void main( String[] args ) throws IOException {
+        System.out.println("Hola");
         List<String> argsList = Arrays.asList(args);
         String language = argsList.get(0);
         String outputFile = argsList.get(1);
