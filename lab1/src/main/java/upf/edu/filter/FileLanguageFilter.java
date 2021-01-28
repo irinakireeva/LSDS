@@ -22,7 +22,7 @@ public class FileLanguageFilter {
 				System.out.println(line);
 				// read next line
 				line = br.readLine();
-
+            }
         br.close();
         bw.close();
 
