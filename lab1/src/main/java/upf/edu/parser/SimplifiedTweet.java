@@ -5,11 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 public class SimplifiedTweet {
 
-  private static JsonParser parser = new JsonParser();
 
   private final long tweetId;			  // the id of the tweet ('id')
   private final String text;  		      // the content of the tweet ('text')
@@ -21,7 +21,6 @@ public class SimplifiedTweet {
   public SimplifiedTweet(long tweetId, String text, long userId, String userName,
                          String language, long timestampMs) {
 
-    // PLACE YOUR CODE HERE!
     this.tweetId = tweetId;
     this.text = text;
     this.userId = userId;
@@ -38,13 +37,18 @@ public class SimplifiedTweet {
    * @param jsonStr
    * @return an {@link Optional} of a {@link SimplifiedTweet}
    */
-  public static Optional<SimplifiedTweet> fromJson(String jsonStr){
+  public static Optional<SimplifiedTweet> fromJson(String jsonStr) {
 
-    // PLACE YOUR CODE HERE!
     JsonElement je = JsonParser.parseString(jsonStr);
     JsonObject jo  = je.getAsJsonObject();
-
     long tweetId;
+    String text;
+    long userId = 0;
+    String userName = null;
+    String language;
+    long timestampMs;
+
+
     if (jo.has("id")){
       tweetId = jo.get("id")
               .getAsLong();
@@ -53,7 +57,6 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    String text = null;
     if (jo.has("text")){
       text = jo.get("text")
               .getAsString();
@@ -62,8 +65,6 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    String userName = null;
-    long userId = Long.parseLong(null);
     if (jo.has("user")) {
       JsonObject userObj = jo.get("user")
               .getAsJsonObject();
@@ -82,7 +83,6 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    String language;
     if (jo.has("lang")){
       language = jo.get("lang")
               .getAsString();
@@ -90,7 +90,6 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    long timestampMs;
     if (jo.has("timestamp_ms")){
       timestampMs = jo.get("timestamp_ms")
               .getAsLong();
@@ -98,14 +97,12 @@ public class SimplifiedTweet {
       return Optional.empty();
     }
 
-    return Optional.of(new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs));
-
+    SimplifiedTweet tweet = new SimplifiedTweet(tweetId, text, userId, userName, language, timestampMs);
+    return Optional.of(tweet);
   }
+
   @Override
   public String toString() {
-    // Overriding how SimplifiedTweets are printed in console or the output file
-    // The following line produces valid JSON as output
     return new Gson().toJson(this);
   }
 }
-
