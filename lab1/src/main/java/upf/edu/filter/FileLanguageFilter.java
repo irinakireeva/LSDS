@@ -1,6 +1,9 @@
 package upf.edu.filter;
 
+import upf.edu.parser.SimplifiedTweet;
+
 import java.io.*;
+import java.util.Optional;
 
 public class FileLanguageFilter {
     private final String InputFile;
@@ -13,14 +16,18 @@ public class FileLanguageFilter {
 
     public void filterLanguage(String language) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(this.InputFile));
-        FileWriter writer = new FileWriter(this.OutputFile);
+        FileWriter writer = new FileWriter(this.OutputFile, true);
         BufferedWriter bw = new BufferedWriter(writer);
+        String line;
+        Optional<SimplifiedTweet> tweetParser = null;
 
-        String line = br.readLine();
-        while (line != null) {
-            System.out.println(line);
-            // read next line
-            line = br.readLine();
+        String tweet = br.readLine();
+        while (tweet != null) {
+            if (tweetParser.isPresent()){
+                line = tweetParser.toString();
+                bw.write(line);
+                bw.newLine();
+            }
         }
         br.close();
         bw.close();
