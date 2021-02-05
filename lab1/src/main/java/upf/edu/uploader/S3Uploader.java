@@ -3,16 +3,17 @@ package upf.edu.uploader;
 import java.util.List;
 
 public class S3Uploader {
-    private final String Bucket;
+    private final String BucketName;
     private final String Prefix;
-    private final String UPF;
+    private final String Credentials;
 
     public S3Uploader(String bucket, String prefix, String upf) {
-        Bucket = bucket;
+        BucketName = bucket;
         Prefix = prefix;
-        UPF = upf;
+        Credentials = upf;
     }
 
     public void upload(List<String> asList) {
+
     }
 }
