@@ -1,9 +1,10 @@
 package upf.edu.uploader;
 
 import java.util.List;
-import com.amazonaws.auth;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
-import software.amazon.awssdk.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
@@ -23,20 +24,20 @@ public class S3Uploader implements Uploader {
     @Override
     public void upload(List<String> files){
         try {
-            AmazonS3 s3Client = AmazonS3ClientBuilder
+            AmazonS3 S3Client = AmazonS3ClientBuilder
                                 .standard()
-                                .withCredentials(ProfileCredentialsProvider(this.profileName))
-                                .withRegion(Region.US_EAST_1)
+                                .withCredentials(new ProfileCredentialsProvider(this.profileName))
+                                .withRegion(Regions.US_EAST_1)
                                 .build();
 
-            if(s3client.doesBucketExist(this.bucketName)) {
+            if(S3Client.doesBucketExist(this.bucketName)) {
                 System.out.println("This bucket already exists.");
                 return;
                 
             }                                
-            s3client.createBucket(bucketName);
+            S3Client.createBucket(bucketName);
             for(String file : files){
-                s3client.putObject(this.bucketName,file, new File(prefix + file));
+                S3Client.putObject(this.bucketName,file, (prefix + file));
             }
             
         } catch (AmazonServiceException e) {
