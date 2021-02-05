@@ -29,12 +29,10 @@ public class FileLanguageFilter {
                     //Parse the line
                     tweetParser = SimplifiedTweet.fromJson(tweet);
                     if (tweetParser.isPresent()){
-                        System.out.println("Tweet parser language: "+tweetParser.get().getLanguage());
-                        System.out.println(language);
-                        if(tweetParser.get().getLanguage() == language){
-                        line = tweetParser.get().toString();
-                        bw.write(line);
-                        bw.newLine();
+                        if(tweetParser.get().getLanguage().equals(language)){
+                            line = tweetParser.get().toString();
+                            bw.write(line);
+                            bw.newLine();
                         }
                     }
                 }
