@@ -28,6 +28,7 @@ public class FileLanguageFilter {
                 bw.write(line);
                 bw.newLine();
             }
+            tweet = br.readLine();
         }
         br.close();
         bw.close();
