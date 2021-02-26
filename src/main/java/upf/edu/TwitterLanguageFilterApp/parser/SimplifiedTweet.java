@@ -1,4 +1,4 @@
-package upf.edu.parser;
+package upf.edu.TwitterLanguageFilterApp.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

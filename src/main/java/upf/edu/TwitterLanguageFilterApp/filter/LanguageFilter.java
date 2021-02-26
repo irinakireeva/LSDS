@@ -1,4 +1,4 @@
-package upf.edu.filter;
+package upf.edu.TwitterLanguageFilterApp.filter;
 
 public interface LanguageFilter {
 

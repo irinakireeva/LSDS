@@ -1,8 +1,8 @@
-package spark;
+package upf.edu.TwitterLanguageFilterApp;
 
-import upf.edu.filter.FileLanguageFilter;
-import upf.edu.filter.FilterException;
-import upf.edu.uploader.S3Uploader;
+import upf.edu.TwitterLanguageFilterApp.filter.FileLanguageFilter;
+import upf.edu.TwitterLanguageFilterApp.filter.FilterException;
+import upf.edu.TwitterLanguageFilterApp.uploader.S3Uploader;
 
 import java.io.IOException;
 import java.util.Arrays;
