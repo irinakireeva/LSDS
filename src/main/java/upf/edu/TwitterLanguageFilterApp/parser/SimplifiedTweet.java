@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.avro.Protocol;
+import org.apache.spark.api.java.function.Function;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -11,6 +13,7 @@ import java.util.Optional;
 public class SimplifiedTweet {
 
 
+  private static JsonParser parser;
   private final long tweetId;			  // the id of the tweet ('id')
   private final String text;  		      // the content of the tweet ('text')
   private final long userId;			  // the user id ('user->id')
@@ -28,6 +31,7 @@ public class SimplifiedTweet {
     this.language = language;
     this.timestampMs = timestampMs;
 
+    parser = new JsonParser();
   }
 
   /**
@@ -38,7 +42,7 @@ public class SimplifiedTweet {
    * @return an {@link Optional} of a {@link SimplifiedTweet}
    */
   public static Optional<SimplifiedTweet> fromJson(String jsonStr) {
-    JsonElement je = JsonParser.parseString(jsonStr);
+    JsonElement je = parser.parse(jsonStr);
     JsonObject jo  = je.getAsJsonObject();
     long tweetId = 0;
     String text = null;

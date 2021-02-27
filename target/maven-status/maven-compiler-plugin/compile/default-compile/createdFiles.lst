@@ -1,1 +1,2 @@
-spark/WordCount.class
+upf/edu/TwitterLanguageFilterApp/filter/LanguageFilter.class
+upf/edu/TwitterLanguageFilterApp/filter/FilterException.class

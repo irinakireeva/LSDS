@@ -1,54 +1,27 @@
 package upf.edu.TwitterLanguageFilterApp.filter;
 
 import java.io.*;
-import java.util.Optional;
-import java.util.Scanner;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.util.Arrays;
+import org.apache.spark.api.java.JavaRDD;
 
-import upf.edu.parser.SimplifiedTweet;
+import org.apache.spark.api.java.JavaSparkContext;
+import upf.edu.TwitterLanguageFilterApp.parser.SimplifiedTweet;
 
 public class FileLanguageFilter {
     private final String InputFile;
     private final String OutputFile;
+    private JavaSparkContext sc;
 
-    public FileLanguageFilter(String inputFile, String outputFile) {
+    public FileLanguageFilter(String inputFile, String outputFile, JavaSparkContext sc) {
         InputFile = inputFile;
         OutputFile = outputFile;
+        this.sc = sc;
     }
 
     public void filterLanguage(String language) throws IOException {
-        Optional<SimplifiedTweet> tweetParser;
-        String line;
-        BufferedReader br = new BufferedReader(new FileReader(this.InputFile));
-        FileWriter writer = new FileWriter(this.OutputFile, true);
-        BufferedWriter bw = new BufferedWriter(writer);
-
-        String tweet = br.readLine();
-        while (tweet != null) {
-				// if line is empty or too short then skip line
-                if (tweet.length() < 2) {
-                    tweet = br.readLine();
-                    continue;
-                } else{
-                    //Parse the line
-                    tweetParser = SimplifiedTweet.fromJson(tweet);
-                    if (tweetParser.isPresent()){
-                        if(tweetParser.get().getLanguage().equals(language)){
-                            line = tweetParser.get().toString();
-                            bw.write(line);
-                            bw.newLine();
-                        }
-                    }
-                }
-                tweet = br.readLine();
-                
-                
-                
-            }
-        br.close();
-        bw.close();
-
+        JavaRDD<String> tweets = sc.textFile(this.InputFile);
+        tweets = tweets.filter(tweet -> tweet.length()>2);
+        JavaRDD<SimplifiedTweet> tweetParser = tweets.map(x -> SimplifiedTweet.fromJson(x));
+        tweetParser = tweetParser.filter(tweet -> tweet.getLanguage().equals(language));
     }
 }
