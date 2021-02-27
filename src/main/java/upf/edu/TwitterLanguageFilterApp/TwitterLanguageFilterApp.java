@@ -2,8 +2,6 @@ package upf.edu.TwitterLanguageFilterApp;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
-import upf.edu.TwitterLanguageFilterApp.filter.FileLanguageFilter;
-import upf.edu.TwitterLanguageFilterApp.filter.FilterException;
 import org.apache.spark.api.java.JavaRDD;
 
 import java.io.IOException;
@@ -23,8 +21,7 @@ public class TwitterLanguageFilterApp {
         System.out.println("Language: " + language + ". Output file: " + outputFile);
         for (String inputFile : argsList.subList(2, argsList.size())) {
             System.out.println("Processing: " + inputFile);
-            final FileLanguageFilter filter = new FileLanguageFilter(inputFile, outputFile, sc);
-            filter.filterLanguage(language);
+
         }
     }
 }

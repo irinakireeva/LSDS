@@ -1,5 +1,2 @@
-/home/david/Documents/LSDS/Lab_2/lsds2018.lab2.master/src/main/java/upf/edu/TwitterLanguageFilterApp/filter/LanguageFilter.java
-/home/david/Documents/LSDS/Lab_2/lsds2018.lab2.master/src/main/java/upf/edu/TwitterLanguageFilterApp/filter/FilterException.java
-/home/david/Documents/LSDS/Lab_2/lsds2018.lab2.master/src/main/java/upf/edu/TwitterLanguageFilterApp/parser/SimplifiedTweet.java
-/home/david/Documents/LSDS/Lab_2/lsds2018.lab2.master/src/main/java/upf/edu/TwitterLanguageFilterApp/filter/FileLanguageFilter.java
-/home/david/Documents/LSDS/Lab_2/lsds2018.lab2.master/src/main/java/upf/edu/TwitterLanguageFilterApp/TwitterLanguageFilterApp.java
+/home/david/Documents/LSDS/Lab_2/Project/src/main/java/upf/edu/TwitterLanguageFilterApp/TwitterLanguageFilterApp.java
+/home/david/Documents/LSDS/Lab_2/Project/src/main/java/upf/edu/TwitterLanguageFilterApp/parser/SimplifiedTweet.java
