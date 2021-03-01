@@ -1,2 +1,4 @@
+upf/edu/BiGramsApp/BiGramsApp.class
 upf/edu/TwitterLanguageFilterApp/TwitterLanguageFilterApp.class
+upf/edu/BiGramsApp/parser/ExtendedSimplifiedTweet.class
 upf/edu/TwitterLanguageFilterApp/parser/SimplifiedTweet.class

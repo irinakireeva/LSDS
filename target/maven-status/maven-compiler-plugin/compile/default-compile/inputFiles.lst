@@ -1,2 +1,4 @@
-/home/david/Documents/LSDS/Lab_2/Project/src/main/java/upf/edu/TwitterLanguageFilterApp/TwitterLanguageFilterApp.java
-/home/david/Documents/LSDS/Lab_2/Project/src/main/java/upf/edu/TwitterLanguageFilterApp/parser/SimplifiedTweet.java
+/home/david/Documents/LSDS/Lab_2/Exercises/src/main/java/upf/edu/BiGramsApp/BiGramsApp.java
+/home/david/Documents/LSDS/Lab_2/Exercises/src/main/java/upf/edu/TwitterLanguageFilterApp/TwitterLanguageFilterApp.java
+/home/david/Documents/LSDS/Lab_2/Exercises/src/main/java/upf/edu/BiGramsApp/parser/ExtendedSimplifiedTweet.java
+/home/david/Documents/LSDS/Lab_2/Exercises/src/main/java/upf/edu/TwitterLanguageFilterApp/parser/SimplifiedTweet.java
