@@ -16,20 +16,18 @@ public class TwitterLanguageFilterApp {
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         List<String> argsList = Arrays.asList(args);
-        String language = argsList.get(0);
-        String inputFile = argsList.get(2);
-
+	String language = argsList.get(0);
+	String outputFile = argsList.get(1);
+	String inputFile = argsList.get(2);
         //Read the file in an RDD
-	    JavaRDD<String> lines = sc.textFile(inputFile);
+		JavaRDD<String> lines = sc.textFile(inputFile);
+		lines.filter( line -> line.length() > 2);
 
-	    //Convert the JSON string lines to SimplifiedTweet
-        JavaRDD<SimplifiedTweet> tweets = lines
-                .map(line -> SimplifiedTweet.fromJson(line))
-                .filter(line -> line.isPresent())
-                .map(tweet -> tweet.get())
-                .filter(tweet -> tweet.getLanguage().equals(language));
-
-        tweets.saveAsTextFile(argsList.get(1));
+		//Now convert string files to SimplifiedTweet
+		JavaRDD<SimplifiedTweet> tweetParser = lines.map(line -> SimplifiedTweet.fromJson(line).orElse(null));
+		tweetParser = tweetParser.filter(tweet -> tweet!=null);
+		tweetParser = tweetParser.filter(tweet -> tweet.getLanguage().equals(language));
+		tweetParser.saveAsTextFile(outputFile);
         sc.close();
     }
 }
