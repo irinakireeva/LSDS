@@ -8,14 +8,15 @@ import scala.Tuple2;
 import upf.edu.BiGramsApp.parser.ExtendedSimplifiedTweet;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 
 public class BiGramsApp {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         SparkConf conf = new SparkConf().setAppName("BiGramsApp");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
@@ -46,11 +47,16 @@ public class BiGramsApp {
                 .mapToPair(word -> new Tuple2<>(word, 1))
                 .reduceByKey((a,b) -> a+b);
 
-        JavaPairRDD<List<String>, Integer> Top10Bigrams = Bigrams
-                .sortByKey();
+        JavaPairRDD<Integer,List<String>> SortedBigrams = Bigrams
+                .mapToPair(bigram -> bigram.swap())
+                .sortByKey(false);
+
+        List<Tuple2<Integer, List<String>>> top10Bigrams = SortedBigrams.take(10);
+        JavaRDD<Tuple2<Integer, List<String>>> Top10Bigrams = sc.parallelize(top10Bigrams);
 
         Top10Bigrams.saveAsTextFile(outputFile);
     }
+
 
     private static List<String> normalise(List<String> words) {
         List<String> normWords = new ArrayList<>();
