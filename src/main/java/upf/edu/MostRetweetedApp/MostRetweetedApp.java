@@ -11,6 +11,7 @@ import upf.edu.ExtendedParser.ExtendedSimplifiedTweet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class MostRetweetedApp {
@@ -31,31 +32,59 @@ public class MostRetweetedApp {
                 .filter(line -> line.isPresent())
                 .map(tweet -> tweet.get());
 
-        //Stage 1
-        //Find the most retweeted users
-        //First find the original tweets
-
-        JavaRDD<ExtendedSimplifiedTweet> orTweets = tweets
-                .filter(tweet -> tweet.isOriginal());
-
         //Find retweets
 
         JavaRDD<ExtendedSimplifiedTweet> rtTweets = tweets
                 .filter(tweet -> !tweet.isOriginal());
 
-        JavaPairRDD<Integer, Long> mostRetweeted = rtTweets
-                .mapToPair(tweet -> new Tuple2<>(tweet.getRetweetedTweetId(), 1))
+        /*
+        * pair retweets with the retweetedTweetId count how many times it appears
+        * and then sorting in descending order
+        */
+
+        //Find the most retweeted users, the same way but taking retweeteduserid
+        JavaPairRDD<Long, Integer> mostRetweetedUsersId = rtTweets
+                .mapToPair(tweet -> new Tuple2<>(tweet.getRetweetedUserId(), 1))
                 .reduceByKey((a, b) -> a+b)
                 .mapToPair(tweetTuple -> tweetTuple.swap())
-                .sortByKey(false);
+                .sortByKey(false)
+                .mapToPair(tweetTuple -> tweetTuple.swap());
 
-        JavaRDD<String> test = mostRetweeted
+
+        /*
+        * First we find the 10 most retweeted users, then we create an empty array
+        * where we'll store the top tweet of each user. We obtain this by counting how
+        * many times that tweet has been retweeted and then we order it to obtain the
+        * largest one.*/
+        List<Tuple2<Long, Integer>> top10Users = mostRetweetedUsersId.take(10);
+
+        List<Long> topTweets = new ArrayList<>();
+
+        for (int i = 0; i<top10Users.size(); i++){
+            long user = top10Users.get(i)._1();
+            if (topTweets.contains(user)){
+                continue;
+            }
+            JavaPairRDD<Long, Integer> userTopRetweets = tweets
+                    .filter(tweet -> tweet.getRetweetedUserId() == user)
+                    .mapToPair(tweet -> new Tuple2<>(tweet.getRetweetedTweetId(), 1))
+                    .reduceByKey((a,b) -> a+b);
+
+            userTopRetweets = userTopRetweets
+                    .mapToPair(tweet -> tweet.swap())
+                    .sortByKey(false)
+                    .mapToPair(tweet->tweet.swap());
+
+
+            topTweets.add(userTopRetweets.take(1).get(0)._1());
+        }
+
+        JavaRDD<String> topTweets10TopUsers = tweets
+                .filter(tweet -> topTweets.contains(tweet.getTweetId()))
                 .map(tweet -> tweet.toString());
 
-        List<String> listTop10Bigrams = test.take(10);
-        JavaRDD<String> top10Bigrams = sc.parallelize(listTop10Bigrams);
+        topTweets10TopUsers.saveAsTextFile(outputFile);
 
-        top10Bigrams.saveAsTextFile(outputFile);
 
     }
 }

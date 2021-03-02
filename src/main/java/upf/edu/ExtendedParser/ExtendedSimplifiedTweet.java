@@ -145,8 +145,10 @@ public class ExtendedSimplifiedTweet implements Serializable {
     public String getText(){
         return this.text;
     }
+    public Long getTweetId(){return this.tweetId;}
     public Long getRetweetedTweetId(){return this.retweetedTweetId;}
-
+    public Long getRetweetedUserId(){return this.retweetedUserId;}
+    public Long getUserId(){return this.userId;}
     @Override
     public String toString() {
         return new Gson().toJson(this);
