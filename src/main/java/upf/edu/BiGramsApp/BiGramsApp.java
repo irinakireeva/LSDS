@@ -47,7 +47,7 @@ public class BiGramsApp {
         */
         JavaRDD<List<String>> tweetsText = tweets
                 .map(tweet -> tweet.getText())
-                .flatMap(s -> get_bigrams(normalise(Arrays.asList((s.split("[ ]"))))).iterator());
+                .flatMap(s -> get_bigrams(normalise(Arrays.asList((s.split(" "))))).iterator());
 
         /*
         * Here we count the amount of times the same bigram appears. By calling reduceByKey
@@ -86,6 +86,9 @@ public class BiGramsApp {
     private static List<String> normalise(List<String> words) {
         List<String> normWords = new ArrayList<>();
         for (String word : words){
+            if (word.isEmpty()){
+                continue;
+            }
             normWords.add(word.trim().toLowerCase());
         }
         return normWords;

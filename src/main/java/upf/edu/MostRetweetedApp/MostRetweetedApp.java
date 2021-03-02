@@ -31,7 +31,20 @@ public class MostRetweetedApp {
                 .filter(line -> line.isPresent())
                 .map(tweet -> tweet.get());
 
-        
+        //Stage 1
+        //Find the most retweeted users
+        //First find the original tweets
+
+        JavaRDD<ExtendedSimplifiedTweet> orTweets = tweets
+                .filter(tweet -> tweet.isOriginal());
+
+        //Find retweets
+
+        JavaRDD<ExtendedSimplifiedTweet> rtTweets = tweets
+                .filter(tweet -> !tweet.isOriginal());
+
+
+
 
 
 

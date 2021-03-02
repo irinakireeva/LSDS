@@ -106,8 +106,7 @@ public class ExtendedSimplifiedTweet implements Serializable {
         } else {
             return Optional.empty();
         }
-        if (jo.has("retweeted")){
-            if (jo.get("retweeted").getAsBoolean()) {
+        if (jo.has("retweeted_status")){
                 isRetweeted = true;
                 retweetedUserId = jo
                         .get("retweeted_status")
@@ -121,7 +120,7 @@ public class ExtendedSimplifiedTweet implements Serializable {
                         .getAsJsonObject()
                         .get("id")
                         .getAsLong();
-            }
+
         }
         if(jo.has("timestamp_ms")){
             timestampMs = jo
