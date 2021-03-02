@@ -61,18 +61,19 @@ public class BiGramsApp {
         /*
         * Since the way JavaPairRDD is build in spark, there's no sortByValue method,
         * thus we must swap the keys and values with the .swap() method from Scala.Tuple2.
-        * Then we just sort the values in descending
+        * Then we just sort the values in descending order.
         */
-        JavaPairRDD<Integer,List<String>> SortedBigrams = Bigrams
+        JavaRDD<String> SortedBigrams = Bigrams
                 .mapToPair(bigram -> bigram.swap())
-                .sortByKey(false);
+                .sortByKey(false)
+                .map(bigram -> bigram.toString());
 
         /*
-        * We then take the 10 first tweets of our sourted tweets rdd
+        * We then take the 10 first tweets of our sorted tweets rdd
         * and convert the list back to an rdd with sc.parallelize().
         */
-        List<Tuple2<Integer, List<String>>> listTop10Bigrams = SortedBigrams.take(10);
-        JavaRDD<Tuple2<Integer, List<String>>> top10Bigrams = sc.parallelize(listTop10Bigrams);
+        List<String> listTop10Bigrams = SortedBigrams.take(10);
+        JavaRDD<String> top10Bigrams = sc.parallelize(listTop10Bigrams);
 
         top10Bigrams.saveAsTextFile(outputFile);
     }
