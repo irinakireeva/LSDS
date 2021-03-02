@@ -36,7 +36,8 @@ public class BiGramsApp {
 
         //Now we must filter for original tweets
         tweets = tweets
-                .filter(tweet -> tweet.isOriginal());
+                .filter(tweet -> tweet.isOriginal())
+                .filter(tweet -> tweet.getLanguage().equals(language));
 
         /*
         * Here we find the bigrams, by first splitting the text into words and formatting
