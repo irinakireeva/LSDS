@@ -142,10 +142,11 @@ public class ExtendedSimplifiedTweet implements Serializable {
     public boolean isOriginal(){
         return !this.isRetweeted;
     }
-
     public String getText(){
         return this.text;
     }
+    public Long getRetweetedTweetId(){return this.retweetedTweetId;}
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

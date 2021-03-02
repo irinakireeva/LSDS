@@ -43,10 +43,19 @@ public class MostRetweetedApp {
         JavaRDD<ExtendedSimplifiedTweet> rtTweets = tweets
                 .filter(tweet -> !tweet.isOriginal());
 
+        JavaPairRDD<Integer, Long> mostRetweeted = rtTweets
+                .mapToPair(tweet -> new Tuple2<>(tweet.getRetweetedTweetId(), 1))
+                .reduceByKey((a, b) -> a+b)
+                .mapToPair(tweetTuple -> tweetTuple.swap())
+                .sortByKey(false);
 
+        JavaRDD<String> test = mostRetweeted
+                .map(tweet -> tweet.toString());
 
+        List<String> listTop10Bigrams = test.take(10);
+        JavaRDD<String> top10Bigrams = sc.parallelize(listTop10Bigrams);
 
-
+        top10Bigrams.saveAsTextFile(outputFile);
 
     }
 }
