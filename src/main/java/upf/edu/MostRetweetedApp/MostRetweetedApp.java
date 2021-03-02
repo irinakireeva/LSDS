@@ -62,19 +62,14 @@ public class MostRetweetedApp {
 
         for (int i = 0; i<top10Users.size(); i++){
             long user = top10Users.get(i)._1();
-            if (topTweets.contains(user)){
-                continue;
-            }
+            
             JavaPairRDD<Long, Integer> userTopRetweets = tweets
                     .filter(tweet -> tweet.getRetweetedUserId() == user)
                     .mapToPair(tweet -> new Tuple2<>(tweet.getRetweetedTweetId(), 1))
-                    .reduceByKey((a,b) -> a+b);
-
-            userTopRetweets = userTopRetweets
+                    .reduceByKey((a,b) -> a+b)
                     .mapToPair(tweet -> tweet.swap())
                     .sortByKey(false)
                     .mapToPair(tweet->tweet.swap());
-
 
             topTweets.add(userTopRetweets.take(1).get(0)._1());
         }

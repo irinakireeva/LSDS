@@ -9,3 +9,7 @@ FR: 3 minutes<br>
 ES: 4 minutes<br>
 EN: 4 minutes<br>
 FR: 4 minutes<br>
+
+# Ex 3 Most Retweeted Users:
+
+36 minutes <br>
