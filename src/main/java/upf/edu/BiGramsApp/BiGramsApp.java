@@ -38,26 +38,51 @@ public class BiGramsApp {
         tweets = tweets
                 .filter(tweet -> tweet.isOriginal());
 
-        //Find the bigrams
+        /*
+        * Here we find the bigrams, by first splitting the text into words and formatting
+        * it as a list, we first normalise the words, we changed the normalise from the
+        * wordCount example, that we explain below. And with the normalised words we
+        * extract all the bigrams that we later flat so we take them out of
+        * the list<list<String>>
+        */
         JavaRDD<List<String>> tweetsText = tweets
                 .map(tweet -> tweet.getText())
                 .flatMap(s -> get_bigrams(normalise(Arrays.asList((s.split("[ ]"))))).iterator());
 
+        /*
+        * Here we count the amount of times the same bigram appears. By calling reduceByKey
+        * and assigning a value of 1 to a pair of the type <bigram, 1> then when the same bigram
+        * appears twice then it will sum making it <bigram, 2> and so on.
+        */
         JavaPairRDD<List<String>, Integer> Bigrams = tweetsText
-                .mapToPair(word -> new Tuple2<>(word, 1))
+                .mapToPair(bigram -> new Tuple2<>(bigram, 1))
                 .reduceByKey((a,b) -> a+b);
 
+        /*
+        * Since the way JavaPairRDD is build in spark, there's no sortByValue method,
+        * thus we must swap the keys and values with the .swap() method from Scala.Tuple2.
+        * Then we just sort the values in descending
+        */
         JavaPairRDD<Integer,List<String>> SortedBigrams = Bigrams
                 .mapToPair(bigram -> bigram.swap())
                 .sortByKey(false);
 
-        List<Tuple2<Integer, List<String>>> top10Bigrams = SortedBigrams.take(10);
-        JavaRDD<Tuple2<Integer, List<String>>> Top10Bigrams = sc.parallelize(top10Bigrams);
+        /*
+        * We then take the 10 first tweets of our sourted tweets rdd
+        * and convert the list back to an rdd with sc.parallelize().
+        */
+        List<Tuple2<Integer, List<String>>> listTop10Bigrams = SortedBigrams.take(10);
+        JavaRDD<Tuple2<Integer, List<String>>> top10Bigrams = sc.parallelize(listTop10Bigrams);
 
-        Top10Bigrams.saveAsTextFile(outputFile);
+        top10Bigrams.saveAsTextFile(outputFile);
     }
 
 
+    /*
+    * Similar to the wordCount example normalise function, we just adapted it to take
+    * and return a list of words representing each tweet's text and normalise each word
+    * in it.
+    */
     private static List<String> normalise(List<String> words) {
         List<String> normWords = new ArrayList<>();
         for (String word : words){
@@ -66,6 +91,11 @@ public class BiGramsApp {
         return normWords;
     }
 
+    /*
+    * This function is used to map each tweet's text to a list of list of words
+    * each nested list formed by two words, the bigram. By looping through the text
+    * until the penultimate word and adding to our collection of words.
+    */
     private static List<List<String>> get_bigrams(List<String> text) {
         List<List<String>> bigrams = new ArrayList<>();
 
