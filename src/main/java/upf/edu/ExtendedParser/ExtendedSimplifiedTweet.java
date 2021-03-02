@@ -1,4 +1,4 @@
-package upf.edu.BiGramsApp.parser;
+package upf.edu.ExtendedParser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

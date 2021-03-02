@@ -5,10 +5,9 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
-import upf.edu.BiGramsApp.parser.ExtendedSimplifiedTweet;
+import upf.edu.ExtendedParser.ExtendedSimplifiedTweet;
 
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
