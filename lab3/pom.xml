@@ -16,15 +16,20 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
-  <dependencies>
+    <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.12</artifactId>
+      <version>2.4.7</version>
+    </dependency>
   </dependencies>
-
+  
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
