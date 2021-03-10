@@ -1,0 +1,11 @@
+upf/edu/TwitterWithWindow.class
+upf/edu/util/LanguageMapUtils.class
+upf/edu/storage/DynamoHashTagRepository.class
+upf/edu/TwitterStateless.class
+upf/edu/TwitterHashtags.class
+upf/edu/util/ConfigUtils.class
+upf/edu/TwitterWindowExample.class
+upf/edu/TwitterWithState.class
+upf/edu/model/HashTagCount.class
+upf/edu/storage/IHashtagRepository.class
+upf/edu/TwitterStreamingExample.class
