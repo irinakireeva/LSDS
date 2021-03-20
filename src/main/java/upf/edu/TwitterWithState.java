@@ -1,17 +1,21 @@
 package upf.edu;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.Optional;
+import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
+
 import scala.Tuple2;
 import twitter4j.Status;
 import twitter4j.auth.OAuthAuthorization;
 import upf.edu.util.ConfigUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 public class TwitterWithState {
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -29,7 +33,7 @@ public class TwitterWithState {
         final JavaPairDStream<String, Integer> tweetPerUser = stream
                 .filter(tweet -> tweet.getLang().equals(language))
                 .mapToPair(tweet -> new Tuple2<>(tweet.getUser().getScreenName(), 1))
-                .reduceByKey(Integer::sum);
+                .updateStateByKey();
 
         // transform to a stream of <userTotal, userName> and get the first 20
         final JavaPairDStream<Integer, String> tweetsCountPerUser = tweetPerUser
