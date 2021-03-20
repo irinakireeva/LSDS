@@ -45,18 +45,6 @@ public class TwitterHashtags {
         final DynamoDB dynamoDB = new DynamoDB(client);
         final Table dynamoDBTable = dynamoDB.getTable(tableName);
 
-        try {
-            System.out.println("Adding a new item...");
-            PutItemOutcome outcome = dynamoDBTable
-                    .putItem(new Item().withPrimaryKey("year", year, "title", title).withMap("info", infoMap));
-
-            System.out.println("PutItem succeeded:\n" + outcome.getPutItemResult());
-
-        }
-        catch (Exception e) {
-            System.err.println("Unable to add item: " + year + " " + title);
-            System.err.println(e.getMessage());
-        }
 
 
         // Start the application and wait for termination signal

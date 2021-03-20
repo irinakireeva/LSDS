@@ -29,11 +29,20 @@ public class TwitterWithState {
 
         final JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jsc, auth);
 
+        final Function2<List<Integer>, Optional<Integer>, Optional<Integer>> countStream =
+                (nums, current) -> {
+                    Integer sum = current.or(0);
+                    for (Integer i : nums) {
+                        sum += i;
+                    }
+                    return Optional.of(sum);
+        };
+
         // create a simpler stream of <user, count> for the given language
         final JavaPairDStream<String, Integer> tweetPerUser = stream
                 .filter(tweet -> tweet.getLang().equals(language))
                 .mapToPair(tweet -> new Tuple2<>(tweet.getUser().getScreenName(), 1))
-                .updateStateByKey();
+                .updateStateByKey(countStream);
 
         // transform to a stream of <userTotal, userName> and get the first 20
         final JavaPairDStream<Integer, String> tweetsCountPerUser = tweetPerUser
