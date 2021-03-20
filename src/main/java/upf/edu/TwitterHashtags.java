@@ -25,7 +25,16 @@ public class TwitterHashtags {
         final JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jsc, auth);
 
         // <IMPLEMENT ME>
-
+//        final String endpoint = "dynamodb.us-east-1.amazonaws.com";
+//        final String region = "us-east-1";
+//
+//        final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+//                .withEndpointConfiguration(
+//                        new AwsClientBuilder.EndpointConfiguration(endpoint, region)
+//                ).withCredentials(new ProfileCredentialsProvider("upf"))
+//                .build();
+//        final DynamoDB dynamoDB = new DynamoDB(client);
+//        final Table dynamoDBTable = dynamoDB.getTable();
         // Start the application and wait for termination signal
         jsc.start();
         jsc.awaitTermination();

@@ -62,7 +62,7 @@ public class TwitterWithWindow {
                 .transformToPair(rdd -> rdd.sortByKey(false));
 
         // Print first 15 results for each one
-//        languageBatchByCount.print(15);
+        languageBatchByCount.print(15);
         languageWindowByCount.print(15);
 
         // Start the application and wait for termination signal

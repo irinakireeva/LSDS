@@ -7,10 +7,9 @@ import java.io.Serializable;
 import java.util.*;
 
 public class DynamoHashTagRepository implements IHashtagRepository, Serializable {
-
   @Override
   public void write(Status tweet) {
-    // IMPLEMENT ME
+    
   }
 
   @Override
