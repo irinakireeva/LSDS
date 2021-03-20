@@ -23,7 +23,7 @@ public class TwitterStateless {
         OAuthAuthorization auth = ConfigUtils.getAuthorizationFromFileProperties(propertiesFile);
 
         SparkConf conf = new SparkConf().setAppName("Real-time Twitter Stateless Exercise");
-        JavaStreamingContext jsc = new JavaStreamingContext(conf, Durations.seconds(30));
+        JavaStreamingContext jsc = new JavaStreamingContext(conf, Durations.seconds(10));
         jsc.checkpoint("/tmp/checkpoint");
 
         final JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jsc, auth);
@@ -42,13 +42,13 @@ public class TwitterStateless {
                 .mapToPair(tweet -> new Tuple2<>(tweet.getLang(), 1))
                 .reduceByKey(Integer::sum);
 
-        final JavaPairDStream<String, Tuple2<String, Integer>> finalLanguageRankStream = languageRankStream
+        final JavaPairDStream<String, Tuple2<String, Integer>> tempLanguageRankStream = languageRankStream
                 .transformToPair(rdd ->
                         rdd.join(languageMap))
                 .mapValues(Tuple2::swap);
 
-        languageRankStream = finalLanguageRankStream
-                .mapToPair(tweet -> tweet._2());
+        languageRankStream = tempLanguageRankStream
+                .mapToPair(Tuple2::_2);
 
         // print first 10 results
         languageRankStream.print();
