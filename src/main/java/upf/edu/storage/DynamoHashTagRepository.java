@@ -14,6 +14,7 @@ import twitter4j.Status;
 import upf.edu.model.HashTagCount;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.*;
 
 public class DynamoHashTagRepository implements IHashtagRepository, Serializable {
@@ -76,10 +77,7 @@ public class DynamoHashTagRepository implements IHashtagRepository, Serializable
                 .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-          System.out.println("Adding " + word + " to the database...");
           UpdateItemOutcome outcome = dynamoDBTable.updateItem(updateItemSpec);
-          System.out.println("UpdateItem succeeded:\n" + outcome.getItem().toJSONPretty());
-
         } catch (Exception e) {
           System.err.println("Unable to update item: " + word);
           System.err.println(e.getMessage());
@@ -97,10 +95,10 @@ public class DynamoHashTagRepository implements IHashtagRepository, Serializable
     nameMap.put("#l", "lang");
 
     Map<String, Object> valueMap = new HashMap<>();
-    valueMap.put(":l", lang);
+    valueMap.put(":lan", lang);
 
     QuerySpec querySpec = new QuerySpec()
-            .withKeyConditionExpression("#l = :l")
+            .withKeyConditionExpression("#l = :lan")
             .withNameMap(nameMap)
             .withValueMap(valueMap);
 
@@ -110,12 +108,12 @@ public class DynamoHashTagRepository implements IHashtagRepository, Serializable
       items = dynamoDBTable.query(querySpec);
       iterator = items.iterator();
       while (iterator.hasNext()) {
-            Map<String, Object> attributes = iterator.next().asMap();
-            String h = (String) attributes.get("Hashtag");
-            String l = (String) attributes.get("lang");
-            Long cl = (Long) attributes.get("icount");
-
-            top10.add(new HashTagCount(h,l,cl));
+        Map<String, Object> attributes = iterator.next().asMap();
+        String h = (String) attributes.get("Hashtag");
+        String l = (String) attributes.get("lang");
+        BigDecimal decCount = (BigDecimal) attributes.get("icount");
+        Long cl = decCount.longValue();
+        top10.add(new HashTagCount(h,l,cl));
       }
     }
     catch (Exception e) {
