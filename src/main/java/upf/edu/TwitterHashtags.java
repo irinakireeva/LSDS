@@ -19,7 +19,7 @@ public class TwitterHashtags {
         OAuthAuthorization auth = ConfigUtils.getAuthorizationFromFileProperties(propertiesFile);
 
         SparkConf conf = new SparkConf().setAppName("Real-time Twitter Example");
-        JavaStreamingContext jsc = new JavaStreamingContext(conf, Durations.seconds(30));
+        JavaStreamingContext jsc = new JavaStreamingContext(conf, Durations.seconds(1));
         DynamoHashTagRepository hashTagRepository = new DynamoHashTagRepository();
 
         // This is needed by spark to write down temporary data
