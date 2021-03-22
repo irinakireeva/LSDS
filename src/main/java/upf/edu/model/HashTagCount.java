@@ -5,9 +5,9 @@ import com.google.gson.Gson;
 public final class HashTagCount {
   protected static Gson gson = new Gson();
 
-  final String hashTag;
-  final String lang;
-  final Long count;
+  public final String hashTag;
+  public final String lang;
+  public final Long count;
 
   public HashTagCount(String hashTag, String lang, Long count) {
     this.hashTag = hashTag;
