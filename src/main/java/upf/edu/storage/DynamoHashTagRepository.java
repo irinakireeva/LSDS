@@ -41,43 +41,23 @@ public class DynamoHashTagRepository implements IHashtagRepository, Serializable
     String text = tweet.getText();
     String[] words = text.split("\\s");
     String lang = tweet.getLang();
-//    Long tweetId = tweet.getId();
+    Long tweetID = tweet.getId();
 
     for (String word : words) {
       if (word.startsWith("#")) {
-        Long count = 0L;
-        //Look for if hashtag already in DB
-        Map<String, String> nameMap = new HashMap<>();
-        nameMap.put("#h", "Hashtag");
-
-        Map<String, Object> valueMap = new HashMap<>();
-        valueMap.put(":h", word);
-
-        QuerySpec querySpec = new QuerySpec()
-                .withKeyConditionExpression("#h = :h")
-                .withNameMap(nameMap)
-                .withValueMap(valueMap);
-
-        ItemCollection<QueryOutcome> items;
-        Iterator<Item> iterator;
-
-        try {
-          items = dynamoDBTable.query(querySpec);
-          iterator = items.iterator();
-          while (iterator.hasNext()) count++;
-        } catch (Exception e) {
-          System.out.println(word + " was not found in the database.");
-        }
-
         UpdateItemSpec updateItemSpec = new UpdateItemSpec().withPrimaryKey("Hashtag", word, "lang", lang)
-                .withUpdateExpression("SET icount = :val")
+                .withUpdateExpression("SET icount = if_not_exists(icount, :empty) + :val, " +
+                        "tweetIDList = list_append(if_not_exists(tweetIDList, :empty_list), :tweetId)")
                 .withValueMap(new ValueMap()
-                        .withNumber(":val", count)
+                        .withNumber(":val", 1)
+                        .withNumber(":empty", -1)
+                        .withList(":empty_list", new ArrayList<String>())
+                        .withList(":tweetId",tweetID.toString())
                 )
                 .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-          UpdateItemOutcome outcome = dynamoDBTable.updateItem(updateItemSpec);
+          dynamoDBTable.updateItem(updateItemSpec);
         } catch (Exception e) {
           System.err.println("Unable to update item: " + word);
           System.err.println(e.getMessage());

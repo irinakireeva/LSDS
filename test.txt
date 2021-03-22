@@ -1,1 +1,0 @@
-[{"hashTag":"#CGM48มะลิ","lang":"en","count":0}, {"hashTag":"#MarminkCGM48","lang":"en","count":0}, {"hashTag":"#Steelers","lang":"en","count":0}, {"hashTag":"#Viswasam","lang":"en","count":0}, {"hashTag":"#tacoswap,","lang":"en","count":0}]
