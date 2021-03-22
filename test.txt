@@ -1,8 +1,39 @@
 []
-Adding #وزارة_التعليمto the database...
-Adding #م…to the database...
-Adding #AkshayKumarto the database...
-Adding #Padman.to the database...
-Adding #랩진to the database...
-Adding #namjinto the database...
-Adding #güv…to the database...
+#jaeten was not found in the database.
+Adding #jaeten to the database...
+UpdateItem succeeded:
+{
+  "icount" : 0
+}
+#PRF was not found in the database.
+Adding #PRF to the database...
+UpdateItem succeeded:
+{
+  "icount" : 0
+}
+#S… was not found in the database.
+Adding #S… to the database...
+UpdateItem succeeded:
+{
+  "icount" : 0
+}
+#Viswasam was not found in the database.
+Adding #Viswasam to the database...
+UpdateItem succeeded:
+{
+  "icount" : 0
+}
+#HearTheTurkishStudent was not found in the database.
+Adding #HearTheTurkishStudent to the database...
+UpdateItem succeeded:
+{
+  "icount" : 0
+}
+#HearTheTurkishStudents was not found in the database.
+Adding #HearTheTurkishStudents to the database...
+UpdateItem succeeded:
+{
+  "icount" : 0
+}
+#Steelers was not found in the database.
+Adding #Steelers to the database...

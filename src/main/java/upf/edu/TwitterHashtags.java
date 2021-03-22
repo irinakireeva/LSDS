@@ -30,7 +30,7 @@ public class TwitterHashtags {
 
         final JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jsc, auth);
 
-        stream.window(Duration.apply(300000)).foreachRDD(RDD -> RDD.foreach(tweet -> hashTagRepository.write(tweet)));
+        stream.window(Duration.apply(10000L)).foreachRDD(RDD -> RDD.foreach(tweet -> hashTagRepository.write(tweet)));
 
         System.out.println(hashTagRepository.readTop10(lang).toString());
 
